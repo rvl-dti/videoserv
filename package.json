@@ -1,0 +1,21 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "server wich downloads video with given link",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yyk@mail.ru",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^6.0.1",
+    "eslint-config-google": "^0.13.0"
+  },
+  "dependencies": {
+    "@google-cloud/speech": "^3.2.2",
+    "express": "^4.17.1",
+    "ffmpeg-extract-audio": "^1.0.2",
+    "youtube-dl": "^2.0.0"
+  }
+}

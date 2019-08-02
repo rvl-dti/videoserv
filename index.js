@@ -1,11 +1,10 @@
 const express = require('express');
 const downloader = require('./downloader');
-const extract = require('./extractor')
+const extract = require('./extractor');
 const app = express();
 const port = 4000;
 
 app.get('/extract', (request, response) => {
-  let url;
   const q = request.query;
   if (typeof q.id !== 'undefined') {
     const id = decodeURIComponent(q.id);

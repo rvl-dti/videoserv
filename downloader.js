@@ -1,18 +1,19 @@
-const fs = require('fs');
-const youtubedl = require('youtube-dl');
-const path = require('path');
+const tdl = require('./tdl');
+const ydl = require('./ydl');
 
 const fetch = (url, dir) => {
-  return new Promise((resolve, reject) => {
-    console.log('fetching start to ' + dir);
-    const video = youtubedl(url,
-    // Optional arguments passed to youtube-dl.
-        ['--format=18'],
-        {cwd: dir});
-
-    const fileName = path.join(dir, url.split('=')[1] + '.mp4');
-    video.pipe(fs.createWriteStream(fileName));
-    video.on('end', ()=> resolve(fileName));
+  return new Promise((resolve, reject)=>{
+    if (/https:\/\/www.youtube.com/.test(url)) {
+      ydl.fetch(url, dir)
+          .then((res)=>resolve(res))
+          .catch((err)=>reject(new Error(err)));
+    } else if (/https:\/\/twitter.com/.test(url)) {
+      tdl.fetch(url, dir)
+          .then((res)=>resolve(res))
+          .catch((err)=>reject(new Error(err)));
+    } else {
+      reject(new Error('not able to download from link ' + url));
+    }
   });
 };
 

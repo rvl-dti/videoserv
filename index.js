@@ -1,15 +1,20 @@
 const express = require('express');
+const dotenv = require('dotenv');
 const downloader = require('./downloader');
 const extract = require('./extractor');
 const app = express();
 const port = 4000;
 
+dotenv.config();
+const videoDir = process.env.VIDEO_FOLDER;
+const audioDir = process.env.AUDIO_FOLDER;
+
 app.get('/extract', (request, response) => {
   const q = request.query;
   if (typeof q.id !== 'undefined') {
     const id = decodeURIComponent(q.id);
-    const source = './video/' + id + '.mp4';
-    const dest = './audio/' + id + '.wav';
+    const source = videoDir + id + '.mp4';
+    const dest = audioDir + id + '.wav';
     extract.audio(source, dest)
         .then((fileName)=>{
           const result = JSON.stringify({status: 'ok', data: id});
@@ -31,7 +36,7 @@ app.get('/download', (request, response) => {
   const q = request.query;
   if (typeof q.url !== 'undefined') {
     url = decodeURIComponent(q.url);
-    downloader.fetch(url, './video')
+    downloader.fetch(url, videoDir)
         .then((fileName)=>{
           const result = JSON.stringify({status: 'ok', data: fileName});
           response.send(result);

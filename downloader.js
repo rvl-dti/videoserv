@@ -6,11 +6,11 @@ const fetch = (url, dir) => {
     if (/https:\/\/www.youtube.com/.test(url)) {
       ydl.fetch(url, dir)
           .then((res)=>resolve(res))
-          .catch((err)=>reject(new Error(err)));
-    } else if (/https:\/\/twitter.com/.test(url)) {
+          .catch((err)=>reject(err));
+    } else if (/https?:\/\/twitter.com/.test(url)) {
       tdl.fetch(url, dir)
           .then((res)=>resolve(res))
-          .catch((err)=>reject(new Error(err)));
+          .catch((err)=>reject(err));
     } else {
       reject(new Error('not able to download from link ' + url));
     }

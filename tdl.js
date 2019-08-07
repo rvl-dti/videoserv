@@ -24,7 +24,6 @@ fetch = (url, dir) => {
         })
         .then((res)=>{
           const playbackUrl = res.data.track.playbackUrl;
-          console.log(playbackUrl);
           const filename = path.join(dir, tweetId + '.mp4');
           ytdl.exec(playbackUrl, ['-o' + filename], {}, function(err, output) {
             if (err) reject(new Error(err));

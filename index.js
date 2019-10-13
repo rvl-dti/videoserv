@@ -13,7 +13,7 @@ app.get('/extract', (request, response) => {
   const q = request.query;
   if (typeof q.id !== 'undefined') {
     const id = decodeURIComponent(q.id);
-    let audioFormat = q.type?'.' + decodeURIComponent(q.type):".wav"
+    const audioFormat = q.type?'.' + decodeURIComponent(q.type):'.wav';
     const source = videoDir + id + '.mp4';
     const dest = audioDir + id + audioFormat;
     extract.audio(source, dest)

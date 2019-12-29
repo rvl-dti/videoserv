@@ -9,7 +9,7 @@
   "author": "yyk@mail.ru",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^6.0.1",
+    "eslint": "^6.8.0",
     "eslint-config-google": "^0.13.0"
   },
   "dependencies": {

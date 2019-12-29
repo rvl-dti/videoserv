@@ -4,6 +4,7 @@ const ffmpeg = require('fluent-ffmpeg');
 const fs = require('fs');
 const {exec} = require('child_process');
 const videoPlayerUrlPrefix = 'https://twitter.com/i/videos/tweet/';
+const DURATION_LIMIT = 140;
 
 const videoFormat = (fullname)=>{
   return new Promise((resolve, reject) =>{
@@ -11,7 +12,7 @@ const videoFormat = (fullname)=>{
       if (err) {
         reject(err);
       }
-      resolve(metadata.format.format_name);
+      resolve(metadata.format);
     });
   });
 };
@@ -57,10 +58,16 @@ const fetch = (url, dir) => {
       if (err) reject(new Error(err));
       videoFormat(filename)
           .then((format)=>{
-            if (format == 'mpegts') {
-              return rename(filename, 'ts');
+            if (format.duration <= DURATION_LIMIT) {
+              if (format.format_name == 'mpegts') {
+                return rename(filename, 'ts');
+              } else {
+                resolve(filename);
+              }
             } else {
-              resolve(filename);
+              reject(new Error(
+                  'video duration more than ' + DURATION_LIMIT + ' seconds'),
+              );
             }
           })
           .then((outname)=>{

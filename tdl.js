@@ -10,9 +10,10 @@ const videoFormat = (fullname)=>{
   return new Promise((resolve, reject) =>{
     ffmpeg.ffprobe(fullname, function(err, metadata) {
       if (err) {
-        reject(err);
+        reject(new Error(err));
+      } else {
+        resolve(metadata.format);
       }
-      resolve(metadata.format);
     });
   });
 };
@@ -55,29 +56,32 @@ const fetch = (url, dir) => {
   return new Promise((resolve, reject) => {
     const filename = path.join(dir, tweetId + '.mp4');
     ytdl.exec(finalUrl, ['-o' + filename], {}, function(err, output) {
-      if (err) reject(new Error(err));
-      videoFormat(filename)
-          .then((format)=>{
-            if (format.duration <= DURATION_LIMIT) {
-              if (format.format_name == 'mpegts') {
-                return rename(filename, 'ts');
+      if (err) {
+        reject(new Error(err));
+      } else {
+        videoFormat(filename)
+            .then((format)=>{
+              if (format.duration <= DURATION_LIMIT) {
+                if (format.format_name == 'mpegts') {
+                  return rename(filename, 'ts');
+                } else {
+                  resolve(filename);
+                }
               } else {
-                resolve(filename);
+                reject(new Error(
+                    'video duration more than ' + DURATION_LIMIT + ' seconds'),
+                );
               }
-            } else {
-              reject(new Error(
-                  'video duration more than ' + DURATION_LIMIT + ' seconds'),
-              );
-            }
-          })
-          .then((outname)=>{
-            return convert(outname);
-          })
-          .then((outname)=>{
-            fs.unlinkSync(replaceExt(outname, 'ts'));
-            resolve(outname);
-          })
-          .catch((err)=>reject(err));
+            })
+            .then((outname)=>{
+              return convert(outname);
+            })
+            .then((outname)=>{
+              fs.unlinkSync(replaceExt(outname, 'ts'));
+              resolve(outname);
+            })
+            .catch((err)=>reject(err));
+      }
     });
   });
 };

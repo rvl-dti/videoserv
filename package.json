@@ -20,7 +20,7 @@
     "ffmpeg-extract-audio": "^1.0.2",
     "fluent-ffmpeg": "^2.1.2",
     "jssoup": "0.0.10",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "youtube-dl": "^2.0.0"
   }
 }

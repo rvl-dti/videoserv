@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const downloader = require('./downloader');
 const extract = require('./extractor');
+const uploader = require('./uploader');
 const app = express();
 const port = 4000;
 
@@ -41,6 +42,7 @@ app.get('/download', (request, response) => {
         .then((fileName)=>{
           const result = JSON.stringify({status: 'ok', data: fileName});
           response.send(result);
+          uploader.upload(fileName);
         })
         .catch((err)=>{
           const errObject = JSON.stringify(err,

@@ -66,7 +66,7 @@ const genUploadFn = (fullpath) => (auth) => {
     'name': path.basename(fullpath)
   };
   const media = {
-    mimeType: 'audio/mp4',
+    mimeType: 'video/mp4',
     body: fs.createReadStream(fullpath)
   };
   drive.files.create({

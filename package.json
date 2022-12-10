@@ -16,7 +16,7 @@
     "@google-cloud/speech": "^3.6.0",
     "axios": "^0.21.1",
     "dotenv": "^8.0.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "ffmpeg-extract-audio": "^1.0.2",
     "fluent-ffmpeg": "^2.1.2",
     "googleapis": "^39.2.0",
